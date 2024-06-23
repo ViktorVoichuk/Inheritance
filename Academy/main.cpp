@@ -47,7 +47,7 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
@@ -110,7 +110,7 @@ public:
 		set_attendance(attendance);
 		cout << "SConstructor:\t" << this << endl;
 	}
-	~Student()
+	~Student() override
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
@@ -153,7 +153,7 @@ public:
 		set_experience(experience);
 		cout << "TConstructor:\t" << this << endl;
 	}
-	~Teacher()
+	~Teacher() override
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
@@ -198,7 +198,7 @@ public:
 		set_grade(grade);
 		cout << "GConstructor:\t" << this << endl;
 	}
-	~Graduate()
+	~Graduate() override
 	{
 		cout << "GDestructor:\t" << this << endl;
 	}
