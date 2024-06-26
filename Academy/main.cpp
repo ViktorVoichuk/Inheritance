@@ -1,6 +1,5 @@
 ﻿#include<iostream>
 #include<string>
-
 using namespace std;
 
 #define delimiter "\n------------------------------------\n"
@@ -59,6 +58,12 @@ public:
 	}
 };
 
+//dynamic_cast<>()
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " y/o";
+}
+
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 class Student :public Human
@@ -110,7 +115,7 @@ public:
 		set_attendance(attendance);
 		cout << "SConstructor:\t" << this << endl;
 	}
-	~Student() override
+	~Student()
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
@@ -122,6 +127,11 @@ public:
 		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	return os << (Human&)obj << " " << obj.get_speciality() << " " << obj.get_group() << " " << obj.get_rating() << " " << obj.get_attendance();
+}
 
 class Teacher : public Human
 {
@@ -153,67 +163,60 @@ public:
 		set_experience(experience);
 		cout << "TConstructor:\t" << this << endl;
 	}
-	~Teacher() override
+	~Teacher()
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
 
 	//					Methods:
-	void info()const override
+	void info()const
 	{
 		Human::info();
 		cout << speciality << " " << experience << " years" << endl;
 	}
 };
 
-#define GRADUATE_TAKE_PARAMETERS const string& thesis_topic,const unsigned int grade
-#define GRADUATE_GIVE_PARAMETERS thesis_topic,grede
-class Graduate : public Student
+std::ostream& operator<<(std::ostream& os, const Teacher& obj)
 {
-	std::string thesis_topic;
-	unsigned int grade;
+	return os << (Human&)obj << " " << obj.get_speciality() << " " << obj.get_experience() << " y/o";
+}
 
+class Graduate :public Student
+{
+	std::string subject;
 public:
-	const std::string& get_thesis_topic()
+	const std::string& get_subject()const
 	{
-		return thesis_topic;
+		return subject;
 	}
-	const unsigned int get_grade()
+	void set_subject(const std::string& subject)
 	{
-		return grade;
-	}
-	void set_thesis_topic(const std::string thesis_topic)
-	{
-		this->thesis_topic = thesis_topic;
-	}
-	void set_grade(unsigned int grade)
-	{
-		this->grade = grade;
+		this->subject = subject;
 	}
 
-	Graduate(HUMAN_TAKE_PARAMETERS,STUDENT_TAKE_PARAMETERS,GRADUATE_TAKE_PARAMETERS):
+	//				Constructors:
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject) :
 		Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
-		set_thesis_topic(thesis_topic);
-		set_grade(grade);
+		set_subject(subject);
 		cout << "GConstructor:\t" << this << endl;
 	}
-	~Graduate() override
+	~Graduate()
 	{
 		cout << "GDestructor:\t" << this << endl;
 	}
 
+	//				Methods:
 	void info()const override
 	{
 		Student::info();
-		cout << "thesis topic: " << thesis_topic << "\ngrade: " << grade << endl;
+		cout << subject << endl;
 	}
 };
 
-std::ostream& operator<<(std::ostream& os, const Human& obj)
+std::ostream& operator<<(std::ostream& os, const Graduate& obj)
 {
-	obj.info();
-	return os;
+	return os << (Student&)obj << " " << obj.get_subject();
 }
 
 //#define INHERITANCE_CHECK
@@ -244,25 +247,30 @@ void main()
 		VFPTR - Virtual Functions Pointers (Таблица указателей на виртуальные функции)
 	*/
 
-	//	Generalization:
+	//	Generalization (UpCast):
 	Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 70, 97),
 		new Teacher("White", "Walter", 50, "Chemistry", 25),
-		new Student("Vercetty", "Tommy", 30, "Theft", "Vice", 97, 98),
-		new Graduate("Vasilii","Vasiliavich",32,"Physics","group",25,55,"topic",99)
+		new Graduate("Schreder", "Hank", 40, "Criminalistic", "OBN", 80, 90, "How to catch Heisenberg"),
+		new Student("Vercetty", "Tommy", 30, "Theft", "Vice", 97, 98)
 	};
 	cout << delimiter << endl;
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		//group[i]->info();
-		cout << *group[i] << endl;
+		cout << typeid(*group[i]).name() << ":\t";
+		//https://legacy.cplusplus.com/doc/tutorial/typecasting/
+		//Specialization (DownCast):
+		if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Graduate))cout << *dynamic_cast<Graduate*>(group[i]) << endl;
 		cout << delimiter << endl;
+		//member-function
 	}
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
 	}
-	
 }
