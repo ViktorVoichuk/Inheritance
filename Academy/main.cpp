@@ -349,7 +349,7 @@ void Load(Human* group[], const std::string& filename)
 	}
 	Human::set_counter(n);
 	fin.close();
-	cout << "Прочитано из файла " << n << " работников\n";
+	cout << "Read from file " << n << " people\n";
 }
 
 //#define INHERITANCE_CHECK
