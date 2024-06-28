@@ -5,34 +5,45 @@ using namespace std;
 
 #define delimiter "\n------------------------------------\n"
 
-#define HUMAN_TAKE_PARAMETERS	const std::string& last_name, const std::string& first_name, unsigned int age
+enum Human_type { tTeacher, tStudent, tGraduate };
+#define HUMAN_TAKE_PARAMETERS	const char last_name[], const char first_name[], unsigned int age
 #define HUMAN_GIVE_PARAMETERS	last_name, first_name, age
 
 class Human
 {
-	std::string last_name;
-	std::string first_name;
+	char last_name[100]{};
+	char first_name[100]{};
 	unsigned int age;
+	static int counter;
+
 public:
-	const std::string& get_last_name()const
+	const char get_last_name()const
 	{
-		return last_name;
+		return *last_name;
 	}
-	const std::string& get_first_name()const
+	const char get_first_name()const
 	{
-		return first_name;
+		return *first_name;
 	}
 	const unsigned int get_age()const
 	{
 		return age;
 	}
-	void set_last_name(const std::string& last_name)
+	static int get_counter()
 	{
-		this->last_name = last_name;
+		return counter;
 	}
-	void set_first_name(const std::string& first_name)
+	static void set_counter(int a)
 	{
-		this->first_name = first_name;
+		counter = a;
+	}
+	void set_last_name(const char last_name[])
+	{
+		memcpy(this->last_name, last_name, strlen(last_name));
+	}
+	void set_first_name(const char first_name[])
+	{
+		memcpy(this->first_name, first_name, strlen(first_name));
 	}
 	void set_age(unsigned int age)
 	{
@@ -40,12 +51,18 @@ public:
 	}
 
 	//				Constructors:
+	Human()
+	{
+
+		counter++;
+	}
 	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
 		set_first_name(first_name);
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
+		counter++;
 	}
 	virtual ~Human()
 	{
@@ -61,30 +78,31 @@ public:
 	{
 		return os << last_name << " " << first_name << " " << age << " y/o";
 	}
-
+	virtual Human_type get_tipe();
 };
+int Human::counter;
 
 std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.info(os);
 }
 
-#define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
+#define STUDENT_TAKE_PARAMETERS const char speciality[], const char group[], double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 class Student :public Human
 {
-	std::string speciality;
-	std::string group;
+	char speciality[100]{};
+	char group[100]{};
 	double rating;
 	double attendance;
 public:
-	const std::string& get_speciality()const
+	const char get_speciality()const
 	{
-		return speciality;
+		return *speciality;
 	}
-	const std::string& get_group()const
+	const char get_group()const
 	{
-		return group;
+		return *group;
 	}
 	double get_rating()const
 	{
@@ -94,13 +112,13 @@ public:
 	{
 		return attendance;
 	}
-	void set_speciality(const std::string& speciality)
+	void set_speciality(const char speciality[])
 	{
-		this->speciality = speciality;
+		memcpy(this->speciality, speciality, strlen(speciality));
 	}
-	void set_group(const std::string& group)
+	void set_group(const char group[])
 	{
-		this->group = group;
+		memcpy(this->group, group, strlen(group));
 	}
 	void set_rating(double rating)
 	{
@@ -112,6 +130,10 @@ public:
 	}
 
 	//				Constructors:
+	Student() :Human()
+	{
+
+	}
 	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
@@ -141,20 +163,20 @@ public:
 
 class Teacher : public Human
 {
-	std::string speciality;
+	char speciality[100]{};
 	unsigned int experience;
 public:
-	const std::string& get_speciality()const
+	const char get_speciality()const
 	{
-		return speciality;
+		return *speciality;
 	}
 	unsigned int get_experience()const
 	{
 		return experience;
 	}
-	void set_speciality(const std::string& speciality)
+	void set_speciality(const char speciality[])
 	{
-		this->speciality = speciality;
+		memcpy(this->speciality, speciality, strlen(speciality));
 	}
 	void set_experience(unsigned int experience)
 	{
@@ -162,7 +184,11 @@ public:
 	}
 
 	//					Constructors:
-	Teacher(HUMAN_TAKE_PARAMETERS, const std::string& speciality, unsigned int experience) :
+	Teacher() :Human()
+	{
+
+	}
+	Teacher(HUMAN_TAKE_PARAMETERS, const char speciality[], unsigned int experience) :
 		Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
@@ -189,19 +215,23 @@ public:
 
 class Graduate :public Student
 {
-	std::string subject;
+	char subject[100]{};
 public:
-	const std::string& get_subject()const
+	const char& get_subject()const
 	{
-		return subject;
+		return *subject;
 	}
-	void set_subject(const std::string& subject)
+	void set_subject(const char subject[])
 	{
-		this->subject = subject;
+		memcpy(this->subject, subject, strlen(subject));
 	}
 
 	//				Constructors:
-	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& subject) :
+	Graduate() :Student()
+	{
+
+	}
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const char subject[]) :
 		Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
 		set_subject(subject);
@@ -225,13 +255,20 @@ public:
 
 };
 
-void Print(Human* group[], const int n)
+Human_type Human::get_tipe()
+{
+	if (typeid(*this) == typeid(Teacher)) return tTeacher;
+	else if (typeid(*this) == typeid(Student)) return tStudent;
+	else if (typeid(*this) == typeid(Graduate)) return tGraduate;
+}
+
+void Print(Human* group[])
 {
 	cout << delimiter << endl;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < Human::get_counter(); i++)
 	{
-		//group[i]->info();
-		cout << *group[i] << endl;
+		group[i]->info();
+		//cout << *group[i] << endl;
 		cout << delimiter << endl;
 	}
 }
@@ -244,15 +281,75 @@ void Clear(Human* group[], const int n)
 }
 void Save(Human* group[], const int n, const std::string& filename)
 {
-	std::ofstream fout(filename);
-	for (int i = 0; i < n; i++)
+	int size;
+	ofstream fout;
+	Human_type human;
+
+	fout.open(filename, ios::binary);
+	if (!fout)
 	{
-		fout << *group[i] << endl;
+		cout << "\nError opening file!\n";
+	}
+	for (int j = 0; j < n; j++)
+	{
+		human = group[j]->get_tipe();
+		fout.write((char*)&human, sizeof(human));
+		switch (human)
+		{
+		case tTeacher:size = sizeof(Teacher); break;
+		case tStudent:size = sizeof(Student); break;
+		case tGraduate:size = sizeof(Graduate); break;
+		default:
+			break;
+		}
+		//fout.write((char*)(group[j]), size);
+		fout.write((char*)(group[j]) + sizeof(void*), size - sizeof(void*));
 	}
 	fout.close();
-	std::string cmd = "notepad " + filename;
-	system(cmd.c_str());
-	//c_str() возвращает содержимое объекта std::string в виде обычно C-string (NULL Terminated line)
+}
+void Load(Human* group[], const std::string& filename)
+{
+	int size;
+	std::ifstream fin;
+	Human_type human;
+
+	fin.open(filename, ios::binary);
+	if (!fin)
+	{
+		cout << "\nError opening file!\n"; return;
+	}
+	Human::set_counter(0);
+	int n = 0;
+	while (true)
+	{
+		fin.read((char*)&human, sizeof(human));
+		if (fin.eof())
+			break;
+
+		switch (human)
+		{
+		case tStudent:
+			group[n] = new Student;
+			size = sizeof(Student);
+			break;
+		case tGraduate:
+			group[n] = new Graduate;
+			size = sizeof(Graduate);
+			break;
+		case tTeacher:
+			group[n] = new Teacher;
+			size = sizeof(Teacher);
+			break;
+		default: return;
+		}
+
+		//fin.read((char*)group[n], size);
+		fin.read((char*)(group[n]) + sizeof(void*), size - sizeof(void*));
+		n++;
+	}
+	Human::set_counter(n);
+	fin.close();
+	cout << "Прочитано из файла " << n << " работников\n";
 }
 
 //#define INHERITANCE_CHECK
@@ -286,14 +383,23 @@ void main()
 	//	Generalization:
 	Human* group[] =
 	{
+
 		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 70, 97),
 		new Teacher("White", "Walter", 50, "Chemistry", 25),
 		new Graduate("Schreder", "Hank", 40, "Criminalistic", "OBN", 80, 90, "How to catch Heisenberg"),
 		new Student("Vercetty", "Tommy", 30, "Theft", "Vice", 97, 98)
 	};
 
-	Print(group, sizeof(group) / sizeof(group[0]));
-	Save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 
+
+	Print(group);
+	cout << delimiter;
+
+	Save(group, sizeof(group) / sizeof(group[0]), "group.txt");
+	Human* group2[10];
+	Load(group2, "group.txt");
+
+	Print(group2);
 	Clear(group, sizeof(group) / sizeof(group[0]));
+	Clear(group2, Human::get_counter());
 }
