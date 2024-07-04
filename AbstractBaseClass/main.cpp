@@ -263,6 +263,9 @@ geometric_figures** FiguresFactory(int a)
 			break;
 		}
 	}
+
+	delete[] arr;
+
 	return group;
 }
 void clear(geometric_figures* group[])
