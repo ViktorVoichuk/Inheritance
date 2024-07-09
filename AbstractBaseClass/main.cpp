@@ -1,300 +1,234 @@
-#include <iostream>
-#include <math.h>
-
+#include<Windows.h>
+#include<iostream>
 using namespace std;
 
-
-#define M_PI 3.14159265358979323846
-#define delimiter "\n--------------------------\n"
-
-enum tFigures
+namespace Geometry
 {
-	tSquare,
-	tRectangle,
-	tTriangle,
-	tCircle
-};
+	enum Color	//enum (Enumeration) - это перечисление. Перечисление - это набор целочисленных констант
+	{
+		CONSOLE_BLUE = 0x99,
+		CONSOLE_GREEN = 0xAA,
+		CONSOLE_RED = 0xCC,
+		CONSOLE_DEFAULT = 0x07,
+		PICTURE_RED = RGB(255, 0, 0),
+		PICTURE_GREEN = RGB(0, 255, 0),
+		PICTURE_BLUE = RGB(0, 0, 255)
+	};
 
-class geometric_figures
-{
-	static int counter;
-protected:
-	int value;
-
-public:
-	static const int get_counter()
+	class Shape
 	{
-		return counter;
-	}
-	const int get_value()const
-	{
-		return value;
-	}
-	void set_value(int value)
-	{
-		this->value = value;
-	}
-
-	geometric_figures()
-	{
-		this->value = 2;
-		counter++;
-	}
-	geometric_figures(int value)
-	{
-		this->value = value;
-		cout << "GFConstructor:\t" << this << endl;
-		counter++;
-	}
-	virtual ~geometric_figures()
-	{
-		cout << "GFDestructor\t" << this << endl;
-		counter--;
-	}
-	virtual double area()const = 0;
-	virtual double perimeter()const = 0;
-	virtual void print()const = 0;
-};
-int geometric_figures::counter = 0;
-
-class Triangle : public geometric_figures //треугольник
-{
-	int b;
-	int c;
-public:
-	const int get_b()const
-	{
-		return b;
-	}
-	const int get_c()const
-	{
-		return c;
-	}
-	int set_b(int b)
-	{
-		this->b = b;
-	}
-	int set_c(int c)
-	{
-		this->c = c;
-	}
-	Triangle() :geometric_figures()
-	{
-		b = 2;
-		c = 2;
-		cout << "TConstructor:\t" << this << endl;
-	}
-	Triangle(int value, int b, int c) :geometric_figures(value)
-	{
-		this->b = b;
-		this->c = c;
-		cout << "TConstructor:\t" << this << endl;
-	}
-	~Triangle()override
-	{
-		cout << "TDestructor:\t" << this << endl;
-	}
-	double perimeter()const override
-	{
-		double P = value + b + c;
-		return P;
-	}
-	double area()const override
-	{
-		double PP = perimeter() / 2;
-		double S = sqrt(PP * ((PP - value) * (PP - b) * (PP - c)));
-		return S;
-	}
-
-	void print()const override
-	{
-		cout << (strchr(typeid(*this).name(), ' ') + 1) << " with the parties " << get_value() << " " << get_b() << " " << get_c() << endl;
-		cout << "Perimeter " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << perimeter() << endl;
-		cout << "Area " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << area() << endl;
-	}
-};
-
-class Square : public geometric_figures //квадрат
-{
-
-public:
-	Square() :geometric_figures()
-	{
-		cout << "SConstructor:\t" << this << endl;
-	}
-	Square(int value) :geometric_figures(value)
-	{
-		cout << "SConstructor:\t" << this << endl;
-	}
-	~Square()override
-	{
-		cout << "SDestructor:\t" << this << endl;
-	}
-	double perimeter()const override
-	{
-		double P = 2 * (value + value);
-		return P;
-	}
-	double area()const override
-	{
-		double S = (value * value);
-		return S;
-	}
-	void print()const override
-	{
-		cout << (strchr(typeid(*this).name(), ' ') + 1) << " with the parties " << get_value() << endl;
-		cout << "Perimeter " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << perimeter() << endl;
-		cout << "Area " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << area() << endl;
-	}
-};
-
-class Rectangle : public geometric_figures //прямоугольник
-{
-	int z;
-public:
-	const int get_z()const
-	{
-		return z;
-	}
-	int set_z(int z)
-	{
-		this->z = z;
-	}
-	Rectangle() :geometric_figures()
-	{
-		this->z = 2;
-		cout << "RConstructor:\t" << this << endl;
-	}
-	Rectangle(int value, int z) :geometric_figures(value)
-	{
-		this->z = z;
-		cout << "RConstructor:\t" << this << endl;
-	}
-	~Rectangle()override
-	{
-		cout << "RDestructor:\t" << this << endl;
-	}
-	double perimeter()const override
-	{
-		double P = 2 * (value + z);
-		return P;
-	}
-	double area()const override
-	{
-		double S = (value * z);
-		return S;
-	}
-	void print()const override
-	{
-		cout << (strchr(typeid(*this).name(), ' ') + 1) << " with the parties " << get_value() << " end " << get_z() << endl;
-		cout << "Perimeter " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << perimeter() << endl;
-		cout << "Area " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << area() << endl;
-	}
-};
-
-class Circle : public geometric_figures //круг
-{
-
-public:
-
-	Circle() :geometric_figures()
-	{
-		cout << "CConstructor:\t" << this << endl;
-	}
-	Circle(int value) :geometric_figures(value)
-	{
-		cout << "CConstructor:\t" << this << endl;
-	}
-	~Circle()override
-	{
-		cout << "CDestructor:\t" << this << endl;
-	}
-	double perimeter()const override
-	{
-		double C = 2 * (M_PI * value);
-		return C;
-	}
-	double area()const override
-	{
-		double S = M_PI * (value * value);
-		return S;
-	}
-	void print()const override
-	{
-		cout << "Radius " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << get_value() << endl;
-		cout << "Perimeter " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << perimeter() << endl;
-		cout << "Area " << (strchr(typeid(*this).name(), ' ') + 1) << " = " << area() << endl;
-	}
-};
-
-geometric_figures** FiguresFactory(int a)
-{
-	geometric_figures** group = nullptr;
-	group = new geometric_figures * [a];
-	srand(time(NULL));
-	const int size = 3;
-	int* arr = new int[a];
-	int arr2[size];
-	for (int i = 0; i < a; i++)
-	{
-		arr[i] = rand() % sizeof(tFigures);
-	}
-	for (int i = 0; i < a; i++)
-	{
-		for (int i = 0; i < size; i++)
+		Color color;
+	public:
+		Shape(Color color) :color(color) {}
+		virtual ~Shape() {}
+		virtual double get_area()const = 0;
+		virtual double get_perimeter()const = 0;
+		virtual void draw()const = 0;
+		Color get_color()const
 		{
-			arr2[i] = (rand() % 10) + 1;
+			return color;
 		}
-		switch (arr[i])
+		void set_color(Color color)
 		{
-		case tSquare:
-			group[i] = new Square(arr2[0]);
-			break;
-		case tRectangle:
-			group[i] = new Rectangle(arr2[0], arr2[1]);
-			break;
-		case tTriangle:
-			group[i] = new Triangle(arr2[0], arr2[0], arr2[0]);
-			break;
-		case tCircle:
-			group[i] = new Circle(arr2[0]);
-			break;
-		default:
-			break;
+			this->color = color;
 		}
-	}
+		virtual void info()const
+		{
+			cout << "Площадь фигуры: " << get_area() << endl;
+			cout << "Периметр фигуры:" << get_perimeter() << endl << endl;
+			draw();
+		}
+	};
 
-	delete[] arr;
-
-	return group;
-}
-void clear(geometric_figures* group[])
-{
-	int a = geometric_figures::get_counter();
-	for (int i = 0; i < a; i++)
+	class Square :public Shape
 	{
-		delete group[i];
-	}
+		double side;	//длина стороны
+	public:
+		Square(double side, Color color) :Shape(color)
+		{
+			set_side(side);
+		}
+		virtual ~Square() {}
+		double get_area()const override
+		{
+			return side * side;
+		}
+		double get_perimeter()const override
+		{
+			return side * 4;
+		}
+		void draw()const override
+		{
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+			SetConsoleTextAttribute(hConsole, get_color());
+			for (int i = 0; i < side; i++)
+			{
+				for (int i = 0; i < side; i++)
+				{
+					cout << "* ";
+				}
+				cout << endl;
+			}
+			SetConsoleTextAttribute(hConsole, Color::CONSOLE_DEFAULT);
+			cout << endl;
+		}
+		double get_side()const
+		{
+			return side;
+		}
+		void set_side(double side)
+		{
+			this->side = side;
+		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Длина стороны: " << side << endl;
+			Shape::info();
+		}
+	};
+
+	class Rectangle :public Shape
+	{
+		double width;
+		double height;
+	public:
+		Rectangle(double width, double height, Color color) :Shape(color)
+		{
+			set_width(width);
+			set_height(height);
+		}
+		~Rectangle() {}
+		double get_area()const override
+		{
+			return width * height;
+		}
+		double get_perimeter()const override
+		{
+			return (width + height) * 2;
+		}
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();	//1) Получаем десткриптор окна консоли.
+											//description
+											//HWND - Handler to Window (Обработчик (Дескриптор) окна)
+			HDC hdc = GetDC(hwnd);			//2) Получаем констукст устройства (Device Context) окна консоли.
+											//	 DC - это то, на чем мы будем рисовать
+			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());	//3) Создаем карандаш. pen рисует контур фигуры.
+																//PS_SOLID - сплошная линия
+																//5 - толщина линии в пикселах
+			HBRUSH hBrush = CreateSolidBrush(get_color());
+
+			//5) Выбираем чем и на чем рисовать:
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			//6) Рисуем прямоугольник:
+			::Rectangle(hdc, 500, 230, 700, 310);
+
+			//7) Освбождаем ресурсы:
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+
+			ReleaseDC(hwnd, hdc);
+
+		}
+		double get_width()const
+		{
+			return width;
+		}
+		double get_height()const
+		{
+			return height;
+		}
+		void set_width(double width)
+		{
+			this->width = width;
+		}
+		void set_height(double height)
+		{
+			this->height = height;
+		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Ширина: " << get_width() << endl;
+			cout << "Высота: " << get_height() << endl;
+			Shape::info();
+		}
+	};
+
+	class Ellips :public Shape
+	{
+		double radius;
+	public:
+		Ellips(double radius, Color color) :Shape(color)
+		{
+			set_radius(radius);
+		}
+		~Ellips() {}
+		double get_area()const override
+		{
+			return ((radius * radius) * 3.14);
+		}
+		double get_perimeter()const override
+		{
+			return (radius * 3.14) * 2;
+		}
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());
+			HBRUSH hBrush = CreateSolidBrush(get_color());
+
+			//Выбираем чем и на чем рисовать:
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			//Рисуем овал:
+			::Ellipse(hdc, 500, 340, 570, 410);
+
+			//Освбождаем ресурсы:
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+
+			ReleaseDC(hwnd, hdc);
+		}
+		double get_radius()const
+		{
+			return radius;
+		}
+		void set_radius(double radius)
+		{
+			this->radius = radius;
+		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Радиус: " << get_radius() << endl;
+			Shape::info();
+		}
+	};
 }
 
-
-int main()
+void main()
 {
-	setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "");
+	/*Shape shape(Color::CONSOLE_BLUE);*/
+	Geometry::Square square(5, Geometry::Color::CONSOLE_GREEN);
+	/*cout << "Длина стороны клвадрата: " << square.get_side() << endl;
+	cout << "Площадь квадрата:  " << square.get_area() << endl;
+	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
+	square.draw();*/
+	square.info();
 
-	geometric_figures** group;
-	group = FiguresFactory(7);
+	Geometry::Rectangle rect{ 15, 8, Geometry::Color::PICTURE_BLUE };
+	rect.info();
 
-	for (int i = 0; i < geometric_figures::get_counter(); i++)
-	{
-		cout << delimiter << endl;
-		cout << "Figure " << i + 1 << endl;
-		group[i]->print();
-	}
+	Geometry::Ellips circle{ 10,Geometry::Color::PICTURE_RED };
+	circle.info();
 
-	clear(group);
-
-	system("pause");
-
-	return 0;
+	cout << endl << endl << endl << endl;
 }
