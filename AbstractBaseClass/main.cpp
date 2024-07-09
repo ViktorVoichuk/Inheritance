@@ -1,10 +1,10 @@
-#include<Windows.h>
+п»ї#include<Windows.h>
 #include<iostream>
 using namespace std;
 
 namespace Geometry
 {
-	enum Color	//enum (Enumeration) - это перечисление. Перечисление - это набор целочисленных констант
+	enum Color	//enum (Enumeration) - СЌС‚Рѕ РїРµСЂРµС‡РёСЃР»РµРЅРёРµ. РџРµСЂРµС‡РёСЃР»РµРЅРёРµ - СЌС‚Рѕ РЅР°Р±РѕСЂ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚
 	{
 		CONSOLE_BLUE = 0x99,
 		CONSOLE_GREEN = 0xAA,
@@ -34,15 +34,15 @@ namespace Geometry
 		}
 		virtual void info()const
 		{
-			cout << "Площадь фигуры: " << get_area() << endl;
-			cout << "Периметр фигуры:" << get_perimeter() << endl << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹: " << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹:" << get_perimeter() << endl << endl;
 			draw();
 		}
 	};
 
 	class Square :public Shape
 	{
-		double side;	//длина стороны
+		double side;	//РґР»РёРЅР° СЃС‚РѕСЂРѕРЅС‹
 	public:
 		Square(double side, Color color) :Shape(color)
 		{
@@ -84,7 +84,7 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны: " << side << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹: " << side << endl;
 			Shape::info();
 		}
 	};
@@ -110,24 +110,24 @@ namespace Geometry
 		}
 		void draw()const override
 		{
-			HWND hwnd = GetConsoleWindow();	//1) Получаем десткриптор окна консоли.
+			HWND hwnd = GetConsoleWindow();	//1) РџРѕР»СѓС‡Р°РµРј РґРµСЃС‚РєСЂРёРїС‚РѕСЂ РѕРєРЅР° РєРѕРЅСЃРѕР»Рё.
 											//description
-											//HWND - Handler to Window (Обработчик (Дескриптор) окна)
-			HDC hdc = GetDC(hwnd);			//2) Получаем констукст устройства (Device Context) окна консоли.
-											//	 DC - это то, на чем мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());	//3) Создаем карандаш. pen рисует контур фигуры.
-																//PS_SOLID - сплошная линия
-																//5 - толщина линии в пикселах
+											//HWND - Handler to Window (РћР±СЂР°Р±РѕС‚С‡РёРє (Р”РµСЃРєСЂРёРїС‚РѕСЂ) РѕРєРЅР°)
+			HDC hdc = GetDC(hwnd);			//2) РџРѕР»СѓС‡Р°РµРј РєРѕРЅСЃС‚СѓРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° (Device Context) РѕРєРЅР° РєРѕРЅСЃРѕР»Рё.
+											//	 DC - СЌС‚Рѕ С‚Рѕ, РЅР° С‡РµРј РјС‹ Р±СѓРґРµРј СЂРёСЃРѕРІР°С‚СЊ
+			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());	//3) РЎРѕР·РґР°РµРј РєР°СЂР°РЅРґР°С€. pen СЂРёСЃСѓРµС‚ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹.
+																//PS_SOLID - СЃРїР»РѕС€РЅР°СЏ Р»РёРЅРёСЏ
+																//5 - С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё РІ РїРёРєСЃРµР»Р°С…
 			HBRUSH hBrush = CreateSolidBrush(get_color());
 
-			//5) Выбираем чем и на чем рисовать:
+			//5) Р’С‹Р±РёСЂР°РµРј С‡РµРј Рё РЅР° С‡РµРј СЂРёСЃРѕРІР°С‚СЊ:
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			//6) Рисуем прямоугольник:
+			//6) Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє:
 			::Rectangle(hdc, 500, 230, 700, 310);
 
-			//7) Освбождаем ресурсы:
+			//7) РћСЃРІР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹:
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 
@@ -153,8 +153,8 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Ширина: " << get_width() << endl;
-			cout << "Высота: " << get_height() << endl;
+			cout << "РЁРёСЂРёРЅР°: " << get_width() << endl;
+			cout << "Р’С‹СЃРѕС‚Р°: " << get_height() << endl;
 			Shape::info();
 		}
 	};
@@ -183,14 +183,14 @@ namespace Geometry
 			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());
 			HBRUSH hBrush = CreateSolidBrush(get_color());
 
-			//Выбираем чем и на чем рисовать:
+			//Р’С‹Р±РёСЂР°РµРј С‡РµРј Рё РЅР° С‡РµРј СЂРёСЃРѕРІР°С‚СЊ:
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			//Рисуем овал:
+			//Р РёСЃСѓРµРј РѕРІР°Р»:
 			::Ellipse(hdc, 500, 340, 570, 410);
 
-			//Освбождаем ресурсы:
+			//РћСЃРІР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹:
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 
@@ -207,7 +207,7 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Радиус: " << get_radius() << endl;
+			cout << "Р Р°РґРёСѓСЃ: " << get_radius() << endl;
 			Shape::info();
 		}
 	};
@@ -218,9 +218,9 @@ void main()
 	setlocale(LC_ALL, "");
 	/*Shape shape(Color::CONSOLE_BLUE);*/
 	Geometry::Square square(5, Geometry::Color::CONSOLE_GREEN);
-	/*cout << "Длина стороны клвадрата: " << square.get_side() << endl;
-	cout << "Площадь квадрата:  " << square.get_area() << endl;
-	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
+	/*cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ РєР»РІР°РґСЂР°С‚Р°: " << square.get_side() << endl;
+	cout << "РџР»РѕС‰Р°РґСЊ РєРІР°РґСЂР°С‚Р°:  " << square.get_area() << endl;
+	cout << "РџРµСЂРёРјРµС‚СЂ РєРІР°РґСЂР°С‚Р°: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 
