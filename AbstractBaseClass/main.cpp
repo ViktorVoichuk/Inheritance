@@ -211,7 +211,87 @@ namespace Geometry
 			Shape::info();
 		}
 	};
+	class Triangle : public Shape  //Треугольик
+	{
+	private:
+		double a;
+		double b;
+		double c;
+	public:
+		const double get_a()const
+		{
+			return a;
+		}
+		void set_a(double a)
+		{
+			this->a = a;
+		}
+		const double get_b()const
+		{
+			return b;
+		}
+		void set_b(double b)
+		{
+			this->b = b;
+		}
+		const double get_c()const
+		{
+			return c;
+		}
+		void set_c(double c)
+		{
+			this->c = c;
+		}
+		Triangle(double a, double b, double c, Color color) :Shape(color)
+		{
+			set_a(a);
+			set_b(b);
+			set_c(c);
+		}
+		virtual ~Triangle() {};
+		double get_area()const override
+		{
+			return sqrt((a + b + c) / 2 * (((a + b + c) / 2 - a) * ((a + b + c) / 2 - b) * ((a + b + c) / 2 - c)));
+		}
+		double get_perimeter()const override
+		{
+			return (a + b + c);
+		}
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());
+			HBRUSH hBrush = CreateSolidBrush(get_color());
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			//определяем массив точек которые образуют треугольник
+			POINT point[] =
+			{
+				{point[0].x = 500,point[0].y = 530},
+				{point[1].x = 550, point[1].y = 460},
+				{point[2].x = 600, point[2].y = 530}
+			};
+			// Рисуем треугольник:
+			Polygon(hdc, point, 3);
+			// Освобождаем ресурсы:
+			DeleteObject(hPen);
+			DeleteObject(hBrush);
+
+			ReleaseDC(hwnd, hdc);
+		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона a: " << get_a() << endl;
+			cout << "Сторона b: " << get_b() << endl;
+			cout << "Сторона c: " << get_c() << endl;
+			Shape::info();
+		}
+	};
 }
+
 
 void main()
 {
@@ -229,6 +309,9 @@ void main()
 
 	Geometry::Ellips circle{ 10,Geometry::Color::PICTURE_RED };
 	circle.info();
+
+	Geometry::Triangle triangle(20, 20, 20, Geometry::Color::PICTURE_GREEN);
+	triangle.info();
 
 	cout << endl << endl << endl << endl;
 }
