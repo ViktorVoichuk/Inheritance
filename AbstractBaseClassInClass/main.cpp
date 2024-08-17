@@ -1,11 +1,11 @@
-#define _USE_MATH_DEFINES
+п»ї#define _USE_MATH_DEFINES
 #include<Windows.h>
 #include<iostream>
 using namespace std;
 
 namespace Geometry
 {
-	enum Color	//enum (Enumeration) - это перечисление. Перечисление - это набор целочисленных констант
+	enum Color	//enum (Enumeration) - СЌС‚Рѕ РїРµСЂРµС‡РёСЃР»РµРЅРёРµ. РџРµСЂРµС‡РёСЃР»РµРЅРёРµ - СЌС‚Рѕ РЅР°Р±РѕСЂ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚
 	{
 		RED = 0x000000FF,
 		DARK_RED = 0x00000077,
@@ -23,15 +23,15 @@ namespace Geometry
 #define SHAPE_GIVE_PARAMETERS	start_x, start_y, line_width, color
 	class Shape
 	{
-	protected:	//Защищенные поля, доступны только внутри класса, и внутри его дочерних классов,
-		//Благодаря protected: к этим полям можно булет образаться напрямую в дочерних классах (без get/set-методов).
+	protected:	//Р—Р°С‰РёС‰РµРЅРЅС‹Рµ РїРѕР»СЏ, РґРѕСЃС‚СѓРїРЅС‹ С‚РѕР»СЊРєРѕ РІРЅСѓС‚СЂРё РєР»Р°СЃСЃР°, Рё РІРЅСѓС‚СЂРё РµРіРѕ РґРѕС‡РµСЂРЅРёС… РєР»Р°СЃСЃРѕРІ,
+		//Р‘Р»Р°РіРѕРґР°СЂСЏ protected: Рє СЌС‚РёРј РїРѕР»СЏРј РјРѕР¶РЅРѕ Р±СѓР»РµС‚ РѕР±СЂР°Р·Р°С‚СЊСЃСЏ РЅР°РїСЂСЏРјСѓСЋ РІ РґРѕС‡РµСЂРЅРёС… РєР»Р°СЃСЃР°С… (Р±РµР· get/set-РјРµС‚РѕРґРѕРІ).
 		Color color;
-		//Коорлинаты, по которым будет выводиться фигура:
+		//РљРѕРѕСЂР»РёРЅР°С‚С‹, РїРѕ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµС‚ РІС‹РІРѕРґРёС‚СЊСЃСЏ С„РёРіСѓСЂР°:
 		unsigned int start_x;
 		unsigned int start_y;
-		//В любой графической оболчке координаты задаются в пикселах.
-		//Начало координат всегда находится в левом верхнем углу.
-		unsigned int line_width;	//толщина линии, которой будет рисорваться контур фигуры.
+		//Р’ Р»СЋР±РѕР№ РіСЂР°С„РёС‡РµСЃРєРѕР№ РѕР±РѕР»С‡РєРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ Р·Р°РґР°СЋС‚СЃСЏ РІ РїРёРєСЃРµР»Р°С….
+		//РќР°С‡Р°Р»Рѕ РєРѕРѕСЂРґРёРЅР°С‚ РІСЃРµРіРґР° РЅР°С…РѕРґРёС‚СЃСЏ РІ Р»РµРІРѕРј РІРµСЂС…РЅРµРј СѓРіР»Сѓ.
+		unsigned int line_width;	//С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё, РєРѕС‚РѕСЂРѕР№ Р±СѓРґРµС‚ СЂРёСЃРѕСЂРІР°С‚СЊСЃСЏ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹.
 		////////////////////////////////////////////////////
 		static const int MIN_START_X = 100;
 		static const int MAX_START_X = 1000;
@@ -108,15 +108,15 @@ namespace Geometry
 		}
 		virtual void info()const
 		{
-			cout << "Площадь фигуры: " << get_area() << endl;
-			cout << "Периметр фигуры:" << get_perimeter() << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹: " << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹:" << get_perimeter() << endl;
 			draw();
 		}
 	};
 	int Shape::count = 0;
 	/*class Square :public Shape
 	{
-		double side;	//длина стороны
+		double side;	//РґР»РёРЅР° СЃС‚РѕСЂРѕРЅС‹
 	public:
 		Square(double side, Color color) :Shape(color)
 		{
@@ -156,7 +156,7 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны: " << side << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹: " << side << endl;
 			Shape::info();
 		}
 	};*/
@@ -183,28 +183,28 @@ namespace Geometry
 		void draw()const override
 		{
 			HWND hwnd = FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
-			//HWND hwnd = GetConsoleWindow();	//1) Получаем десткриптор окна консоли.
+			//HWND hwnd = GetConsoleWindow();	//1) РџРѕР»СѓС‡Р°РµРј РґРµСЃС‚РєСЂРёРїС‚РѕСЂ РѕРєРЅР° РєРѕРЅСЃРѕР»Рё.
 											//description
-											//HWND - Handler to Window (Обработчик (Дескриптор) окна)
+											//HWND - Handler to Window (РћР±СЂР°Р±РѕС‚С‡РёРє (Р”РµСЃРєСЂРёРїС‚РѕСЂ) РѕРєРЅР°)
 
-			HDC hdc = GetDC(hwnd);			//2) Получаем констекст устройства (Device Context) окна консоли.
-											//	 DC - это то, на чем мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, line_width, get_color());	//3) Создаем карандаш. pen рисует контур фигуры.
-																//PS_SOLID - сплошная линия
-																//5 - толщина линии в пикселах
+			HDC hdc = GetDC(hwnd);			//2) РџРѕР»СѓС‡Р°РµРј РєРѕРЅСЃС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° (Device Context) РѕРєРЅР° РєРѕРЅСЃРѕР»Рё.
+											//	 DC - СЌС‚Рѕ С‚Рѕ, РЅР° С‡РµРј РјС‹ Р±СѓРґРµРј СЂРёСЃРѕРІР°С‚СЊ
+			HPEN hPen = CreatePen(PS_SOLID, line_width, get_color());	//3) РЎРѕР·РґР°РµРј РєР°СЂР°РЅРґР°С€. pen СЂРёСЃСѓРµС‚ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹.
+																//PS_SOLID - СЃРїР»РѕС€РЅР°СЏ Р»РёРЅРёСЏ
+																//5 - С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё РІ РїРёРєСЃРµР»Р°С…
 
 			HBRUSH hBrush = CreateSolidBrush(get_color());
 
-			//5) Выбираем чем и на чем рисовать:
+			//5) Р’С‹Р±РёСЂР°РµРј С‡РµРј Рё РЅР° С‡РµРј СЂРёСЃРѕРІР°С‚СЊ:
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			//6) Рисуем прямоугольник:
+			//6) Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє:
 			::Rectangle(hdc, start_x, start_y, start_x + width, start_y + height);
-			//start_x, start_y - координаты верхнего левого угла
-			//800,350 - координаты нижнего правого угла.
+			//start_x, start_y - РєРѕРѕСЂРґРёРЅР°С‚С‹ РІРµСЂС…РЅРµРіРѕ Р»РµРІРѕРіРѕ СѓРіР»Р°
+			//800,350 - РєРѕРѕСЂРґРёРЅР°С‚С‹ РЅРёР¶РЅРµРіРѕ РїСЂР°РІРѕРіРѕ СѓРіР»Р°.
 
-			//7) Освбождаем ресурсы:
+			//7) РћСЃРІР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹:
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 
@@ -229,8 +229,8 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Ширина: " << get_width() << endl;
-			cout << "Высота: " << get_height() << endl;
+			cout << "РЁРёСЂРёРЅР°: " << get_width() << endl;
+			cout << "Р’С‹СЃРѕС‚Р°: " << get_height() << endl;
 			Shape::info();
 		}
 	};
@@ -305,7 +305,7 @@ namespace Geometry
 		~Triangle() {}
 		void info()const override
 		{
-			cout << "Высота треугольника: " << get_height() << endl;
+			cout << "Р’С‹СЃРѕС‚Р° С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°: " << get_height() << endl;
 			Shape::info();
 		}
 	};
@@ -367,7 +367,7 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны:\t" << side << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹:\t" << side << endl;
 			Triangle::info();
 		}
 	};
@@ -378,9 +378,9 @@ void main()
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::CONSOLE_BLUE);
 	Geometry::Square square(50, 3000, 5000, 500, Geometry::Color::BLUE);
-	/*cout << "Длина стороны клвадрата: " << square.get_side() << endl;
-	cout << "Площадь квадрата:  " << square.get_area() << endl;
-	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
+	/*cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ РєР»РІР°РґСЂР°С‚Р°: " << square.get_side() << endl;
+	cout << "РџР»РѕС‰Р°РґСЊ РєРІР°РґСЂР°С‚Р°:  " << square.get_area() << endl;
+	cout << "РџРµСЂРёРјРµС‚СЂ РєРІР°РґСЂР°С‚Р°: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 
@@ -393,6 +393,6 @@ void main()
 	Geometry::EquilateralTriangle e_triangle(5, 200, 300, 150, Geometry::Color::GREEN);
 	e_triangle.info();
 
-	cout << "Количество фигур: " << e_triangle.get_count() << endl;
-	cout << "Количество фигур: " << Geometry::Shape::get_count() << endl;
+	cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ С„РёРіСѓСЂ: " << e_triangle.get_count() << endl;
+	cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ С„РёРіСѓСЂ: " << Geometry::Shape::get_count() << endl;
 }
